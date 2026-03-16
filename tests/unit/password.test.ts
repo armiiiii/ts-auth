@@ -1,33 +1,38 @@
-import bcrypt from "bcrypt";
-import { hashPassword } from "../../src/services/helpers/password.js";
+import { hashPassword, verifyPassword } from "../../src/services/helpers/password.js";
 
 describe("passwords", () => {
-  describe("hashPassword", () => {
-    const testPass1 = "some-password-123";
-    const testPass2 = "different-one";
+  const testPass1 = "some-password-123";
+  const testPass2 = "different-one";
 
-    it("Should return valid hash", async () => {
-      const hash = await hashPassword(testPass1);
+  it("Should return valid hash", async () => {
+    const hash = await hashPassword(testPass1);
 
-      const valid = await bcrypt.compare(testPass1, hash);
+    const valid = await verifyPassword(testPass1, hash);
 
-      expect(valid).toBe(true);
-    });
+    expect(valid).toBe(true);
+  });
 
-    it("Should fail for dif passwords", async () => {
-      const hash = await hashPassword(testPass1);
+  it("Should fail for dif passwords", async () => {
+    const hash = await hashPassword(testPass1);
 
-      const valid = await bcrypt.compare(testPass2, hash);
+    const valid = await verifyPassword(testPass2, hash);
 
-      expect(valid).toBe(false);
-    });
+    expect(valid).toBe(false);
+  });
 
-    it("Should fail for nullish password", async () => {
-      const hash = await hashPassword("");
+  it("Should fail for nullish password", async () => {
+    const hash = await hashPassword("");
 
-      const valid = await bcrypt.compare(testPass1, hash);
+    const valid = await verifyPassword(testPass1, hash);
 
-      expect(valid).toBe(false);
-    });
+    expect(valid).toBe(false);
+  });
+
+  it("Verify salting works", async () => {
+    const hash1 = await hashPassword(testPass1);
+
+    const hash2 = await hashPassword(hash1);
+
+    expect(hash1).not.toBe(hash2);
   });
 });
