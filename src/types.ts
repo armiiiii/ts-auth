@@ -1,6 +1,7 @@
 type Brand<B> = { readonly _brand: B };
 type Branded<T, B> = T & Brand<B>;
 
+export type PlainPassword = Branded<string, "PlainPassword">;
 export type PasswordHash = Branded<string, "PasswordHash">;
 export type UserId = Branded<string, "UserId">;
 

@@ -1,8 +1,12 @@
-import { hashPassword, verifyPassword } from "../../src/services/helpers/password.js";
+import {
+  hashPassword,
+  verifyPassword,
+} from "../../src/services/helpers/password.js";
+import type { PlainPassword } from "../../src/types.js";
 
 describe("passwords", () => {
-  const testPass1 = "some-password-123";
-  const testPass2 = "different-one";
+  const testPass1 = "some-password-123" as PlainPassword;
+  const testPass2 = "different-one" as PlainPassword;
 
   it("Should return valid hash", async () => {
     const hash = await hashPassword(testPass1);
@@ -20,19 +24,17 @@ describe("passwords", () => {
     expect(valid).toBe(false);
   });
 
-  it("Should fail for nullish password", async () => {
-    const hash = await hashPassword("");
-
-    const valid = await verifyPassword(testPass1, hash);
-
-    expect(valid).toBe(false);
-  });
-
   it("Verify salting works", async () => {
     const hash1 = await hashPassword(testPass1);
 
-    const hash2 = await hashPassword(hash1);
+    const hash2 = await hashPassword(testPass1);
 
     expect(hash1).not.toBe(hash2);
+  });
+
+  it("Should throw on nullish string passed", async () => {
+    await expect(hashPassword("" as PlainPassword)).rejects.toThrow(
+      "Invalid password structure",
+    );
   });
 });
