@@ -1,8 +1,8 @@
 import {
   hashPassword,
   verifyPassword,
-} from "../../src/services/helpers/password.js";
-import type { PlainPassword } from "../../src/types.js";
+} from "@src/services/helpers/password.js";
+import type { PlainPassword } from "@src/types.js";
 
 describe("passwords", () => {
   const testPass1 = "some-password-123" as PlainPassword;
