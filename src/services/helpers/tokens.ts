@@ -4,22 +4,19 @@ import { err, ok, type Result } from "../../result.js";
 import type {
   AccessToken,
   AccessTokenPayload,
+  AuthConfig,
   AuthError,
+  JwtSecret,
   PublicUser,
   RefreshToken,
 } from "../../types.js";
-import {
-  ACCESS_TOKEN_EXPIRATION_TIME,
-  DEV_SECRET,
-  SIGN_ALGORITHM,
-} from "./consts.js";
 
 export const randomRefresh = () =>
   crypto.randomBytes(16).toString("hex") as RefreshToken;
 
 export function generateAccessToken(
   user: PublicUser,
-  secretToken = DEV_SECRET,
+  config: Pick<AuthConfig, "jwtSecret" | "accessTokenExpiresIn" | "algorithm">,
 ): AccessToken {
   const now = Math.floor(Date.now() / 1000);
   return jwt.sign(
@@ -27,16 +24,16 @@ export function generateAccessToken(
       sub: user.id,
       email: user.email,
       iat: now,
-      exp: now + ACCESS_TOKEN_EXPIRATION_TIME,
+      exp: now + config.accessTokenExpiresIn,
     },
-    secretToken,
-    { algorithm: SIGN_ALGORITHM },
+    config.jwtSecret,
+    { algorithm: config.algorithm },
   ) as AccessToken;
 }
 
 export function decodeAccessToken(
   accessToken: AccessToken,
-  secretToken = DEV_SECRET,
+  secretToken: JwtSecret,
 ): Result<AccessTokenPayload, AuthError> {
   try {
     const decoded = jwt.verify(accessToken, secretToken) as AccessTokenPayload;

@@ -7,10 +7,11 @@ import type {
   IUserRepository,
 } from "@src/repository.js";
 import AuthService from "@src/services/auth-service.js";
-import { DEV_EXPIRES_AT } from "@src/services/helpers/consts.js";
 import { hashPassword } from "@src/services/helpers/password.js";
 import { randomRefresh } from "@src/services/helpers/tokens.js";
 import type {
+  AuthConfig,
+  JwtSecret,
   PlainPassword,
   RefreshToken,
   StoredRefreshToken,
@@ -23,7 +24,14 @@ import {
   randomUserEmail,
 } from "@tests/helpers/utils.js";
 
-describe("UserService", () => {
+const testConfig: AuthConfig = {
+  jwtSecret: "test-secret-do-not-use" as JwtSecret,
+  algorithm: "HS256",
+  accessTokenExpiresIn: 15 * 60,
+  refreshTokenExpiresIn: 30 * 24 * 60 * 60,
+};
+
+describe("AuthService", () => {
   let email: string;
   let password: PlainPassword;
   let tokenRepo: ITokenRepository;
@@ -48,7 +56,7 @@ describe("UserService", () => {
     userRepo = new UserRepository();
     await userRepo.save(randomUser);
 
-    authService = new AuthService(userRepo, tokenRepo);
+    authService = new AuthService(userRepo, tokenRepo, testConfig);
   });
 
   describe("register", () => {
@@ -83,7 +91,7 @@ describe("UserService", () => {
 
       await userRepo.save(createUser(email, hash));
 
-      const authService = new AuthService(userRepo, tokenRepo);
+      const authService = new AuthService(userRepo, tokenRepo, testConfig);
 
       const result = await authService.login(email, password);
 
@@ -111,7 +119,7 @@ describe("UserService", () => {
 
       await userRepo.save(createUser(email, hash));
 
-      const authService = new AuthService(userRepo, tokenRepo);
+      const authService = new AuthService(userRepo, tokenRepo, testConfig);
 
       const result = await authService.login(email, randomPassword());
 
@@ -163,7 +171,7 @@ describe("UserService", () => {
     it("should return AuthError if refresh is expired", async () => {
       vi.useFakeTimers();
 
-      vi.advanceTimersByTime((DEV_EXPIRES_AT + 1) * 1000);
+      vi.advanceTimersByTime((testConfig.refreshTokenExpiresIn + 1) * 1000);
 
       const result = await authService.refresh(
         storedTokens[0]?.token as RefreshToken,
@@ -220,7 +228,7 @@ describe("UserService", () => {
 
     it("should return AuthError if token doesn't exist", async () => {
       const tokenRepo = new TokenRepository();
-      const authService = new AuthService(userRepo, tokenRepo);
+      const authService = new AuthService(userRepo, tokenRepo, testConfig);
 
       const result = await authService.logout(
         storedTokens[0]?.token as RefreshToken,

@@ -8,6 +8,7 @@ import type {
 } from "@src/repository.js";
 import { err, ok, type Result } from "@src/result.js";
 import type {
+  AuthConfig,
   AuthError,
   PlainPassword,
   PublicUser,
@@ -21,6 +22,7 @@ export default class AuthService implements IAuthService {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly tokenRepository: ITokenRepository,
+    private readonly config: AuthConfig,
   ) {}
 
   async register(
@@ -71,9 +73,9 @@ export default class AuthService implements IAuthService {
   }
 
   private async issueTokens(user: User): Promise<RefreshResult> {
-    const accessToken = generateAccessToken(user);
+    const accessToken = generateAccessToken(user, this.config);
     const refreshToken = randomRefresh();
-    const storedRefresh = generateStoredRefresh(refreshToken, user.id);
+    const storedRefresh = generateStoredRefresh(refreshToken, user.id, this.config);
     await this.tokenRepository.save(storedRefresh);
     return {
       accessToken,

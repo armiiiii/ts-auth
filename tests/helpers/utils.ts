@@ -1,4 +1,3 @@
-import { DEV_EXPIRES_AT } from "@src/services/helpers/consts.js";
 import { hashPassword } from "@src/services/helpers/password.js";
 import { randomRefresh } from "@src/services/helpers/tokens.js";
 import type {
@@ -70,7 +69,7 @@ export function generateStoredRefreshToken(): StoredRefreshToken {
     userId: randomUserId(),
     token: randomRefresh(),
     createdAt: now,
-    expiresAt: now + DEV_EXPIRES_AT,
+    expiresAt: now + 30 * 24 * 60 * 60,
   };
 }
 

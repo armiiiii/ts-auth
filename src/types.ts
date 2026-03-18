@@ -37,6 +37,13 @@ export type StoredRefreshToken = {
   createdAt: number;
 };
 
+export type JwtSecret = Branded<string, "JwtSecret">;
+export type AuthConfig = {
+  algorithm: "HS256" | "RS256";
+  accessTokenExpiresIn: number; // Seconds
+  refreshTokenExpiresIn: number; // Seconds
+  jwtSecret: JwtSecret;
+};
 type ErrorCode =
   | "INVALID_CREDENTIALS"
   | "USER_ALREADY_EXISTS"
