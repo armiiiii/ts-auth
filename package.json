@@ -13,6 +13,14 @@
   },
   "name": "@krmiii/ts-auth",
   "description": "Authentication provider library for backend servers build on JavaScript and TypeScript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krmiii/ts-auth"
+  },
+  "homepage": "https://github.com/krmiii/ts-auth#readme",
+  "bugs": {
+    "url": "https://github.com/krmiii/ts-auth/issues"
+  },
   "keywords": [
     "auth",
     "authentication",
