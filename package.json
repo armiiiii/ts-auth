@@ -15,11 +15,11 @@
   "description": "Authentication provider library for backend servers build on JavaScript and TypeScript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/krmiii/ts-auth"
+    "url": "https://github.com/armiiiii/ts-auth"
   },
-  "homepage": "https://github.com/krmiii/ts-auth#readme",
+  "homepage": "https://github.com/armiiiii/ts-auth#readme",
   "bugs": {
-    "url": "https://github.com/krmiii/ts-auth/issues"
+    "url": "https://github.com/armiiiii/ts-auth/issues"
   },
   "keywords": [
     "auth",
@@ -36,7 +36,7 @@
     "typescript",
     "javascript"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
