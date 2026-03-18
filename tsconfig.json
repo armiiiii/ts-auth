@@ -15,6 +15,9 @@
       "@src/*": ["./src/*"],
       "@tests/*": ["./tests/*"]
     },
+
+    "outDir": "./dist",
+
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],

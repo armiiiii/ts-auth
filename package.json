@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build": "tsc --project tsconfig.build.json"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -10,14 +11,39 @@
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
   },
-  "name": "random",
+  "name": "@krmiii/ts-auth",
+  "description": "Authentication provider library for backend servers build on JavaScript and TypeScript",
+  "keywords": [
+    "auth",
+    "authentication",
+    "login",
+    "refresh",
+    "access",
+    "token",
+    "logout",
+    "registration",
+    "register",
+    "ts",
+    "js",
+    "typescript",
+    "javascript"
+  ],
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "jsonwebtoken": "^9.0.3",
-    "zod": "^4.3.6"
+    "jsonwebtoken": "^9.0.3"
   }
 }
