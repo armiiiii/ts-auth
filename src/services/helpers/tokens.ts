@@ -1,18 +1,21 @@
 import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import crypto from "node:crypto";
 import { err, ok, type Result } from "../../result.js";
 import type {
-    AccessToken,
-    AccessTokenPayload,
-    AuthError,
-    PublicUser,
+  AccessToken,
+  AccessTokenPayload,
+  AuthError,
+  PublicUser,
+  RefreshToken,
 } from "../../types.js";
+import {
+  ACCESS_TOKEN_EXPIRATION_TIME,
+  DEV_SECRET,
+  SIGN_ALGORITHM,
+} from "./consts.js";
 
-const DEV_SECRET =
-  "2cb0d9f89c9b878a34a85b678b1bba354fa6a9daae84f8fa3fac293c1033c419";
-
-const ACCESS_TOKEN_EXPIRATION_TIME = 15 * 60; // 15 minutes
-
-const SIGN_ALGORITHM = "HS256";
+export const randomRefresh = () =>
+  crypto.randomBytes(16).toString("hex") as RefreshToken;
 
 export function generateAccessToken(
   user: PublicUser,

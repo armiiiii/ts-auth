@@ -1,16 +1,17 @@
 import type { Result } from "./result.js";
 import type {
-    AccessToken,
-    AuthError,
-    PublicUser,
-    RefreshToken,
-    StoredRefreshToken,
-    StoredRefreshTokenId,
-    User,
-    UserId,
+  AccessToken,
+  AuthError,
+  PlainPassword,
+  PublicUser,
+  RefreshToken,
+  StoredRefreshToken,
+  StoredRefreshTokenId,
+  User,
+  UserId,
 } from "./types.js";
 
-type RefreshResult = {
+export type RefreshResult = {
   accessToken: AccessToken;
   refreshToken: RefreshToken;
 };
@@ -18,12 +19,12 @@ type RefreshResult = {
 export interface IAuthService {
   register(
     email: string,
-    password: string,
+    password: PlainPassword,
   ): Promise<Result<PublicUser, AuthError>>;
 
   login(
     email: string,
-    password: string,
+    password: PlainPassword,
   ): Promise<Result<RefreshResult, AuthError>>;
 
   refresh(
