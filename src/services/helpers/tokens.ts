@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
 import { err, ok, type Result } from "../../result.js";
 import type {
@@ -10,6 +10,7 @@ import type {
   PublicUser,
   RefreshToken,
 } from "../../types.js";
+const { JsonWebTokenError, TokenExpiredError } = jwt;
 
 export const randomRefresh = () =>
   crypto.randomBytes(16).toString("hex") as RefreshToken;
